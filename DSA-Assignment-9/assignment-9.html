@@ -1,0 +1,391 @@
+
+    💡 **Question 1**
+    
+    Given an integer `n`, return *`true` if it is a power of two. Otherwise, return `false`*.
+    
+    An integer `n` is a power of two, if there exists an integer `x` such that `n == 2x`.
+    
+    **Example 1:**
+    Input: n = 1 
+    
+    Output: true
+    
+    **Example 2:**
+    Input: n = 16 
+    
+    Output: true
+    
+    **Example 3:**
+    Input: n = 3 
+    
+    Output: false
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function isPowerOfTwo(n) {
+  if (n <= 0) {
+    return false; // Negative numbers and 0 are not powers of two
+  }
+
+  while (n > 1) {
+    if (n % 2 !== 0) {
+      return false; // If n is not divisible by 2, it's not a power of two
+    }
+    n /= 2; // Divide n by 2
+  }
+
+  return true; // If n becomes 1, it's a power of two
+}
+
+console.log(isPowerOfTwo(1)); // Output: true
+console.log(isPowerOfTwo(16)); // Output: true
+console.log(isPowerOfTwo(3)); // Output: false
+
+    </script>
+</body>
+</html>
+    
+
+
+    💡 **Question 2**
+    
+    Given a number n, find the sum of the first natural numbers.
+    
+    **Example 1:**
+    
+    Input: n = 3 
+    
+    Output: 6
+    
+    **Example 2:**
+    
+    Input  : 5 
+    
+    Output : 15
+    
+  
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            function sumOfFirstNaturalNumbers(n) {
+  if (n <= 0) {
+    return 0; // If n is less than or equal to 0, the sum is 0
+  }
+
+  return (n * (n + 1)) / 2;
+}
+
+console.log(sumOfFirstNaturalNumbers(3)); // Output: 6
+console.log(sumOfFirstNaturalNumbers(5)); // Output: 15
+
+        </script>
+    </body>
+    </html>
+
+
+
+        💡 **Question 3**
+        
+        ****Given a positive integer, N. Find the factorial of N. 
+        
+        **Example 1:**
+        
+        Input: N = 5 
+        
+        Output: 120
+        
+        **Example 2:**
+        
+        Input: N = 4
+        
+        Output: 24
+        
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+ </head>
+ <body>
+    <script>
+        function factorial(N) {
+  if (N === 0 || N === 1) {
+    return 1; // Factorial of 0 and 1 is 1
+  }
+
+  let result = 1;
+  for (let i = 2; i <= N; i++) {
+    result *= i;
+  }
+
+  return result;
+}
+
+
+console.log(factorial(5)); // Output: 120
+console.log(factorial(4)); // Output: 24
+
+    </script>
+ </body>
+ </html>  
+
+
+
+    💡 **Question 4**
+    
+    Given a number N and a power P, the task is to find the exponent of this number raised to the given power, i.e. N^P.
+    
+    **Example 1 :** 
+    
+    Input: N = 5, P = 2
+    
+    Output: 25
+    
+    **Example 2 :**
+    Input: N = 2, P = 5
+    
+    Output: 32
+    
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            function exponentiation(N, P) {
+  return Math.pow(N, P);
+}
+
+function customExponentiation(N, P) {
+  let result = 1;
+  for (let i = 0; i < P; i++) {
+    result *= N;
+  }
+  return result;
+}
+
+console.log(exponentiation(5, 2)); // Output: 25
+console.log(exponentiation(2, 5)); // Output: 32
+
+console.log(customExponentiation(5, 2)); // Output: 25
+console.log(customExponentiation(2, 5)); // Output: 32
+
+        </script>
+    </body>
+    </html>
+
+
+ 
+        💡 **Question 5**
+        
+        Given an array of integers **arr**, the task is to find maximum element of that array using recursion.
+        
+        **Example 1:**
+        
+        Input: arr = {1, 4, 3, -5, -4, 8, 6};
+        Output: 8
+        
+        **Example 2:**
+        
+        Input: arr = {1, 4, 45, 6, 10, -8};
+        Output: 45
+        
+  
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Document</title>
+        </head>
+        <body>
+            <script>
+                function findMaxRecursive(arr, left, right) {
+  if (left === right) {
+    return arr[left]; // Base case: array with a single element
+  }
+
+  const mid = Math.floor((left + right) / 2);
+  const maxLeft = findMaxRecursive(arr, left, mid);
+  const maxRight = findMaxRecursive(arr, mid + 1, right);
+
+  return Math.max(maxLeft, maxRight);
+}
+
+function findMaxElement(arr) {
+  return findMaxRecursive(arr, 0, arr.length - 1);
+}
+
+console.log(findMaxElement([1, 4, 3, -5, -4, 8, 6])); // Output: 8
+console.log(findMaxElement([1, 4, 45, 6, 10, -8])); // Output: 45
+
+            </script>
+        </body>
+        </html>
+
+
+
+            💡 **Question 6**
+            
+            Given first term (a), common difference (d) and a integer N of the Arithmetic Progression series, the task is to find Nth term of the series.
+            
+            **Example 1:**
+            
+            Input : a = 2 d = 1 N = 5
+            Output : 6
+            The 5th term of the series is : 6
+            
+            **Example 2:**
+            
+            Input : a = 5 d = 2 N = 10
+            Output : 23
+            The 10th term of the series is : 23
+            
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function findNthTerm(a, d, N) {
+  return a + (N - 1) * d;
+}
+
+console.log(findNthTerm(2, 1, 5)); // Output: 6
+console.log(findNthTerm(5, 2, 10)); // Output: 23
+
+    </script>
+</body>
+</html>
+
+
+
+    💡 **Question 7**
+    
+    Given a string S, the task is to write a program to print all permutations of a given string.
+    
+    **Example 1:**
+    
+    ***Input:***
+    
+    *S = “ABC”*
+    
+    ***Output:***
+    
+    *“ABC”, “ACB”, “BAC”, “BCA”, “CBA”, “CAB”*
+    
+    **Example 2:**
+    
+    ***Input:***
+    
+    *S = “XY”*
+    
+    ***Output:***
+    
+    *“XY”, “YX”*
+    
+   
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            function swap(str, i, j) {
+  const charArray = str.split('');
+  const temp = charArray[i];
+  charArray[i] = charArray[j];
+  charArray[j] = temp;
+  return charArray.join('');
+}
+
+function permute(str, left, right, result) {
+  if (left === right) {
+    result.push(str);
+    return;
+  }
+
+  for (let i = left; i <= right; i++) {
+    str = swap(str, left, i);
+    permute(str, left + 1, right, result);
+    str = swap(str, left, i); // backtrack to the original string for the next iteration
+  }
+}
+
+function getAllPermutations(S) {
+  const result = [];
+  permute(S, 0, S.length - 1, result);
+  return result;
+}
+
+console.log(getAllPermutations("ABC")); // Output: ["ABC", "ACB", "BAC", "BCA", "CBA", "CAB"]
+console.log(getAllPermutations("XY"));  // Output: ["XY", "YX"]
+
+        </script>
+    </body>
+    </html>
+
+
+    
+        💡 **Question 8**
+        
+        Given an array, find a product of all array elements.
+        
+        **Example 1:**
+        
+        Input  : arr[] = {1, 2, 3, 4, 5}
+        Output : 120
+        **Example 2:**
+        
+        Input  : arr[] = {1, 6, 3}
+        Output : 18
+        
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function arrayProduct(arr) {
+  let product = 1;
+
+  for (let i = 0; i < arr.length; i++) {
+    product *= arr[i];
+  }
+
+  return product;
+}
+
+console.log(arrayProduct([1, 2, 3, 4, 5])); // Output: 120
+console.log(arrayProduct([1, 6, 3])); // Output: 18
+
+    </script>
+</body>
+</html>
