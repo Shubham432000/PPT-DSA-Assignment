@@ -1,0 +1,886 @@
+
+    💡 **Question 1**
+    
+    Given a singly linked list, delete **middle** of the linked list. For example, if given linked list is 1->2->**3**->4->5 then linked list should be modified to 1->2->4->5.If there are **even** nodes, then there would be **two middle** nodes, we need to delete the second middle element. For example, if given linked list is 1->2->3->4->5->6 then it should be modified to 1->2->3->5->6.If the input linked list is NULL or has 1 node, then it should return NULL
+    
+    **Example 1:**
+    
+
+    Input:
+    LinkedList: 1->2->3->4->5
+    Output:1 2 4 5
+    
+    
+    
+    **Example 2:**
+    
+    Input:
+LinkedList: 2->4->6->7->5->1
+Output:2 4 6 5 1
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class ListNode {
+  constructor(val, next = null) {
+    this.val = val;
+    this.next = next;
+  }
+}
+
+function deleteMiddle(head) {
+  if (!head || !head.next) {
+    return null;
+  }
+
+  let slow = head;
+  let fast = head;
+  let prevSlow = null;
+
+  while (fast && fast.next) {
+    fast = fast.next.next;
+    prevSlow = slow;
+    slow = slow.next;
+  }
+
+  if (prevSlow) {
+    prevSlow.next = slow.next;
+  } else {
+    head = head.next;
+  }
+
+  return head;
+}
+
+function printLinkedList(head) {
+  let current = head;
+  while (current) {
+    process.stdout.write(current.val + " ");
+    current = current.next;
+  }
+  console.log();
+}
+
+// Helper function to create a linked list from an array of values
+function createLinkedList(values) {
+  let head = null;
+  let tail = null;
+  for (const val of values) {
+    const node = new ListNode(val);
+    if (!head) {
+      head = node;
+      tail = node;
+    } else {
+      tail.next = node;
+      tail = node;
+    }
+  }
+  return head;
+}
+
+// Test example 1
+const inputList1 = createLinkedList([1, 2, 3, 4, 5]);
+console.log("Input:");
+printLinkedList(inputList1);
+
+const result1 = deleteMiddle(inputList1);
+console.log("Output:");
+printLinkedList(result1);
+
+// Test example 2
+const inputList2 = createLinkedList([2, 4, 6, 7, 5, 1]);
+console.log("Input:");
+printLinkedList(inputList2);
+
+const result2 = deleteMiddle(inputList2);
+console.log("Output:");
+printLinkedList(result2);
+
+    </script>
+</body>
+</html>
+
+
+
+    💡 **Question 2**
+    
+    Given a linked list of **N** nodes. The task is to check if the linked list has a loop. Linked list can contain self loop.
+    
+    **Example 1:**
+    
+
+    Input:
+    N = 3
+    value[] = {1,3,4}
+    x(position at which tail is connected) = 2
+    Output:True
+    Explanation:In above test case N = 3.
+    The linked list with nodes N = 3 is
+    given. Then value of x=2 is given which
+    means last node is connected with xth
+    node of linked list. Therefore, there
+    exists a loop.
+    
+    
+    **Example 2:**
+    
+    Input:
+N = 4
+value[] = {1,8,3,4}
+x = 0
+Output:False
+Explanation:For N = 4 ,x = 0 means
+then lastNode->next = NULL, then
+the Linked list does not contains
+any loop.
+   
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class ListNode {
+  constructor(val) {
+    this.val = val;
+    this.next = null;
+  }
+}
+
+function hasLoop(head) {
+  if (!head || !head.next) {
+    return false;
+  }
+
+  let slow = head;
+  let fast = head;
+
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+
+    if (slow === fast) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+// Helper function to create a linked list with a loop
+function createLinkedListWithLoop(values, x) {
+  let head = null;
+  let tail = null;
+  let loopNode = null;
+
+  for (let i = 0; i < values.length; i++) {
+    const node = new ListNode(values[i]);
+
+    if (i === x) {
+      loopNode = node;
+    }
+
+    if (!head) {
+      head = node;
+      tail = node;
+    } else {
+      tail.next = node;
+      tail = node;
+    }
+  }
+
+  if (loopNode) {
+    tail.next = loopNode;
+  }
+
+  return head;
+}
+
+// Test example 1
+const inputList12 = createLinkedListWithLoop([1, 3, 4], 2);
+console.log("Output:", hasLoop(inputList12));
+
+// Test example 2
+const inputList22 = createLinkedListWithLoop([1, 8, 3, 4], 0);
+console.log("Output:", hasLoop(inputList22));
+
+    </script>
+</body>
+</html>
+
+
+
+    💡 **Question 3**
+    
+    Given a linked list consisting of **L** nodes and given a number **N**. The task is to find the **N**th node from the end of the linked list.
+    
+    **Example 1:**
+    
+  
+    Input:
+    N = 2
+    LinkedList: 1->2->3->4->5->6->7->8->9
+    Output:8
+    Explanation:In the first example, there
+    are 9 nodes in linked list and we need
+    to find 2nd node from end. 2nd node
+    from end is 8.
+    
+    
+    
+    **Example 2:**
+    
+    Input:
+N = 5
+LinkedList: 10->5->100->5
+Output:-1
+Explanation:In the second example, there
+are 4 nodes in the linked list and we
+need to find 5th from the end. Since 'n'
+is more than the number of nodes in the
+linked list, the output is -1.
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class ListNode {
+  constructor(val) {
+    this.val = val;
+    this.next = null;
+  }
+}
+
+function findNthFromEnd(head, n) {
+  if (!head || n <= 0) {
+    return -1;
+  }
+
+  let main = head;
+  let reference = head;
+
+  // Move the main pointer N nodes ahead
+  for (let i = 0; i < n; i++) {
+    if (!main) {
+      // N is greater than the number of nodes
+      return -1;
+    }
+    main = main.next;
+  }
+
+  // Move both pointers together until the main pointer reaches the end
+  while (main) {
+    main = main.next;
+    reference = reference.next;
+  }
+
+  return reference ? reference.val : -1;
+}
+
+// Helper function to create a linked list from an array of values
+function createLinkedList(values) {
+  let head = null;
+  let tail = null;
+  for (const val of values) {
+    const node = new ListNode(val);
+    if (!head) {
+      head = node;
+      tail = node;
+    } else {
+      tail.next = node;
+      tail = node;
+    }
+  }
+  return head;
+}
+
+// Test example 1
+const inputList13 = createLinkedList([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+console.log("Output:", findNthFromEnd(inputList13, 2));
+
+// Test example 2
+const inputList23 = createLinkedList([10, 5, 100, 5]);
+console.log("Output:", findNthFromEnd(inputList23, 5));
+
+    </script>
+</body>
+</html>
+
+
+
+    💡 **Question 4**
+    
+    Given a singly linked list of characters, write a function that returns true if the given list is a palindrome, else false.
+    
+    !https://media.geeksforgeeks.org/wp-content/uploads/20220816144425/LLdrawio.png
+    
+    **Examples:**
+    
+    > Input: R->A->D->A->R->NULL
+    > 
+    > 
+    > **Output:** Yes
+    > 
+    > **Input:** C->O->D->E->NULL
+    > 
+    > **Output:** No
+    > 
+   
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            class ListNode {
+  constructor(val) {
+    this.val = val;
+    this.next = null;
+  }
+}
+
+function isPalindrome(head) {
+  if (!head || !head.next) {
+    return true; // An empty list or a list with one node is considered a palindrome
+  }
+
+  const charArray = [];
+  let current = head;
+
+  while (current) {
+    charArray.push(current.val);
+    current = current.next;
+  }
+
+  // Compare characters from both ends of the array to check if it forms a palindrome
+  let left = 0;
+  let right = charArray.length - 1;
+
+  while (left < right) {
+    if (charArray[left] !== charArray[right]) {
+      return false;
+    }
+    left++;
+    right--;
+  }
+
+  return true;
+}
+
+// Helper function to create a linked list from a string of characters
+function createLinkedListFromChars(str) {
+  let head = null;
+  let tail = null;
+
+  for (const char of str) {
+    const node = new ListNode(char);
+    if (!head) {
+      head = node;
+      tail = node;
+    } else {
+      tail.next = node;
+      tail = node;
+    }
+  }
+
+  return head;
+}
+
+// Test example 1
+const inputList14 = createLinkedListFromChars("RADAR");
+console.log("Output:", isPalindrome(inputList14));
+
+// Test example 2
+const inputList24 = createLinkedListFromChars("CODE");
+console.log("Output:", isPalindrome(inputList24));
+
+        </script>
+    </body>
+    </html>
+
+
+
+ 
+        💡 **Question 5**
+        
+        Given a linked list of **N** nodes such that it may contain a loop.
+        
+        A loop here means that the last node of the link list is connected to the node at position X(1-based index). If the link list does not have any loop, X=0.
+        
+        Remove the loop from the linked list, if it is present, i.e. unlink the last node which is forming the loop.
+        
+        **Example 1:**
+        
+        
+        Input:
+        N = 3
+        value[] = {1,3,4}
+        X = 2
+        Output:1
+        Explanation:The link list looks like
+        1 -> 3 -> 4
+             ^    |
+             |____|
+        A loop is present. If you remove it
+        successfully, the answer will be 1.
+        
+        
+        
+        **Example 2:**
+        
+        
+        Input:
+        N = 4
+        value[] = {1,8,3,4}
+        X = 0
+        Output:1
+        Explanation:The Linked list does not
+        contains any loop.
+        
+        
+        **Example 3:**
+        
+        Input:
+N = 4
+value[] = {1,2,3,4}
+X = 1
+Output:1
+Explanation:The link list looks like
+1 -> 2 -> 3 -> 4
+^              |
+|______________|
+A loop is present.
+If you remove it successfully,
+the answer will be 1.
+ 
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class ListNode {
+  constructor(val) {
+    this.val = val;
+    this.next = null;
+  }
+}
+
+function detectAndRemoveLoop(head) {
+  let slow = head;
+  let fast = head;
+  let loopStart = null;
+
+  // Detect the loop using the Floyd's Cycle Detection Algorithm
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+
+    if (slow === fast) {
+      loopStart = findLoopStart(head, slow);
+      break;
+    }
+  }
+
+  if (loopStart) {
+    // If loopStart is found, it means a loop is present
+    // Now remove the loop by setting the next pointer of the last node in the loop to null
+    let current = loopStart;
+    while (current.next !== loopStart) {
+      current = current.next;
+    }
+    current.next = null;
+  }
+}
+
+function findLoopStart(head, meetingPoint) {
+  let ptr1 = head;
+  let ptr2 = meetingPoint;
+
+  while (ptr1 !== ptr2) {
+    ptr1 = ptr1.next;
+    ptr2 = ptr2.next;
+  }
+
+  return ptr1;
+}
+
+// Helper function to create a linked list from an array of values
+function createLinkedList(values) {
+  let head = null;
+  let tail = null;
+  for (const val of values) {
+    const node = new ListNode(val);
+    if (!head) {
+      head = node;
+      tail = node;
+    } else {
+      tail.next = node;
+      tail = node;
+    }
+  }
+  return head;
+}
+
+// Test example 1
+const inputList15 = createLinkedList([1, 3, 4]);
+const loopNode1 = inputList1.next; // 3 -> 4 (loop starts at 3)
+inputList1.next.next.next = loopNode1; // Creating the loop
+detectAndRemoveLoop(inputList15);
+console.log("Output:");
+printLinkedList(inputList1);
+
+// Test example 2
+const inputList25 = createLinkedList([1, 8, 3, 4]);
+detectAndRemoveLoop(inputList25);
+console.log("Output:");
+printLinkedList(inputList2);
+
+// Test example 3
+const inputList3 = createLinkedList([1, 2, 3, 4]);
+const loopNode3 = inputList3; // 1 -> 2 -> 3 -> 4 (loop starts at 1)
+inputList3.next.next.next.next = loopNode3; // Creating the loop
+detectAndRemoveLoop(inputList3);
+console.log("Output:");
+printLinkedList(inputList3);
+
+    </script>
+</body>
+</html>
+
+
+    💡 **Question 6**
+    
+    Given a linked list and two integers M and N. Traverse the linked list such that you retain M nodes then delete next N nodes, continue the same till end of the linked list.
+    
+    Difficulty Level: Rookie
+    
+    **Examples**:
+    
+    Input:
+    M = 2, N = 2
+    Linked List: 1->2->3->4->5->6->7->8
+    Output:
+    Linked List: 1->2->5->6
+    
+    Input:
+    M = 3, N = 2
+    Linked List: 1->2->3->4->5->6->7->8->9->10
+    Output:
+    Linked List: 1->2->3->6->7->8
+    
+    Input:
+    M = 1, N = 1
+    Linked List: 1->2->3->4->5->6->7->8->9->10
+    Output:
+    Linked List: 1->3->5->7->9
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            class ListNode {
+  constructor(val) {
+    this.val = val;
+    this.next = null;
+  }
+}
+
+function skipMDeleteN(head, M, N) {
+  if (!head || M <= 0 || N <= 0) {
+    return head;
+  }
+
+  let current = head;
+  let prev = null;
+
+  while (current) {
+    // Skip M nodes
+    for (let i = 0; i < M && current; i++) {
+      prev = current;
+      current = current.next;
+    }
+
+    // Delete N nodes
+    for (let i = 0; i < N && current; i++) {
+      current = current.next;
+    }
+
+    // Link the previous node to the current node after skipping N nodes
+    prev.next = current;
+  }
+
+  return head;
+}
+
+// Helper function to create a linked list from an array of values
+function createLinkedList(values) {
+  let head = null;
+  let tail = null;
+  for (const val of values) {
+    const node = new ListNode(val);
+    if (!head) {
+      head = node;
+      tail = node;
+    } else {
+      tail.next = node;
+      tail = node;
+    }
+  }
+  return head;
+}
+
+// Helper function to print the linked list
+function printLinkedList(head) {
+  let current = head;
+  while (current) {
+    process.stdout.write(current.val + " ");
+    current = current.next;
+  }
+  console.log();
+}
+
+// Test example 1
+const inputList1 = createLinkedList([1, 2, 3, 4, 5, 6, 7, 8]);
+const M1 = 2;
+const N1 = 2;
+console.log("Input:");
+printLinkedList(inputList1);
+const result16 = skipMDeleteN(inputList1, M1, N1);
+console.log("Output:");
+printLinkedList(result16);
+
+// Test example 2
+const inputList26 = createLinkedList([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+const M2 = 3;
+const N2 = 2;
+console.log("Input:");
+printLinkedList(inputList26);
+const result26 = skipMDeleteN(inputList2, M2, N2);
+console.log("Output:");
+printLinkedList(result26);
+
+// Test example 3
+const inputList3 = createLinkedList([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+const M3 = 1;
+const N3 = 1;
+console.log("Input:");
+printLinkedList(inputList3);
+const result3 = skipMDeleteN(inputList3, M3, N3);
+console.log("Output:");
+printLinkedList(result3);
+
+        </script>
+    </body>
+    </html>
+
+
+
+
+        💡 **Question 7**
+        
+        Given two linked lists, insert nodes of second list into first list at alternate positions of first list.
+        For example, if first list is 5->7->17->13->11 and second is 12->10->2->4->6, the first list should become 5->12->7->10->17->2->13->4->11->6 and second list should become empty. The nodes of second list should only be inserted when there are positions available. For example, if the first list is 1->2->3 and second list is 4->5->6->7->8, then first list should become 1->4->2->5->3->6 and second list to 7->8.
+        
+        Use of extra space is not allowed (Not allowed to create additional nodes), i.e., insertion must be done in-place. Expected time complexity is O(n) where n is number of nodes in first list.
+        
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+        class ListNode {
+  constructor(val) {
+    this.val = val;
+    this.next = null;
+  }
+}
+
+function insertAtAlternatePositions(first, second) {
+  if (!first) {
+    return second;
+  }
+
+  let currentFirst = first;
+  let currentSecond = second;
+
+  while (currentFirst && currentSecond) {
+    let tempNextFirst = currentFirst.next;
+    let tempNextSecond = currentSecond.next;
+
+    currentFirst.next = currentSecond;
+    currentSecond.next = tempNextFirst;
+
+    currentFirst = tempNextFirst;
+    currentSecond = tempNextSecond;
+  }
+
+  return first;
+}
+
+// Helper function to create a linked list from an array of values
+function createLinkedList(values) {
+  let head = null;
+  let tail = null;
+  for (const val of values) {
+    const node = new ListNode(val);
+    if (!head) {
+      head = node;
+      tail = node;
+    } else {
+      tail.next = node;
+      tail = node;
+    }
+  }
+  return head;
+}
+
+// Helper function to print the linked list
+function printLinkedList(head) {
+  let current = head;
+  while (current) {
+    process.stdout.write(current.val + " ");
+    current = current.next;
+  }
+  console.log();
+}
+
+// Test example
+const firstList = createLinkedList([5, 7, 17, 13, 11]);
+const secondList = createLinkedList([12, 10, 2, 4, 6]);
+console.log("First List:");
+printLinkedList(firstList);
+console.log("Second List:");
+printLinkedList(secondList);
+
+insertAtAlternatePositions(firstList, secondList);
+
+console.log("Modified First List:");
+printLinkedList(firstList);
+console.log("Modified Second List:");
+printLinkedList(secondList);
+
+    </script>
+  </body>
+  </html>
+
+
+
+    💡 **Question 8**
+    
+    Given a singly linked list, find if the linked list is [circular](https://www.geeksforgeeks.org/circular-linked-list/amp/) or not.
+    
+    > A linked list is called circular if it is not NULL-terminated and all nodes are connected in the form of a cycle. Below is an example of a circular linked list.
+    > 
+    
+    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d30bbf79-b1eb-4ba4-b23e-6d3f27ccdfe5/Untitled.png)
+    
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            class ListNode {
+  constructor(val) {
+    this.val = val;
+    this.next = null;
+  }
+}
+
+function isCircular(head) {
+  if (!head || !head.next) {
+    return false; // An empty list or a list with one node is not circular
+  }
+
+  let slow = head;
+  let fast = head;
+
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+
+    if (slow === fast) {
+      return true; // If slow and fast pointers meet, the list is circular
+    }
+  }
+
+  return false; // If the fast pointer reaches the end, the list is not circular
+}
+
+// Helper function to create a circular linked list from an array of values
+function createCircularLinkedList(values) {
+  let head = null;
+  let tail = null;
+
+  for (const val of values) {
+    const node = new ListNode(val);
+    if (!head) {
+      head = node;
+      tail = node;
+    } else {
+      tail.next = node;
+      tail = node;
+    }
+  }
+
+  if (tail) {
+    tail.next = head; // Connect the last node to the head to make it circular
+  }
+
+  return head;
+}
+
+// Test example 1
+const inputList1 = createCircularLinkedList([1, 2, 3, 4, 5]);
+console.log("Output:", isCircular(inputList1));
+
+// Test example 2
+const inputList28 = createCircularLinkedList([2]);
+console.log("Output:", isCircular(inputList28));
+
+// Test example 3 (An empty list is not circular)
+console.log("Output:", isCircular(null));
+
+        </script>
+    </body>
+    </html>
+   
