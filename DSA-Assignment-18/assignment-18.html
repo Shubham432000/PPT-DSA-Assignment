@@ -1,0 +1,640 @@
+
+    💡 1. **Merge Intervals**
+    
+    Given an array of `intervals` where `intervals[i] = [starti, endi]`, merge all overlapping intervals, and return *an array of the non-overlapping intervals that cover all the intervals in the input*.
+    
+    **Example 1:**
+    
+    
+    Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
+    Output: [[1,6],[8,10],[15,18]]
+    Explanation: Since intervals [1,3] and [2,6] overlap, merge them into [1,6].
+    
+    
+    
+    **Example 2:**
+    
+    
+    Input: intervals = [[1,4],[4,5]]
+    Output: [[1,5]]
+    Explanation: Intervals [1,4] and [4,5] are considered overlapping.
+    
+    
+    
+    **Constraints:**
+    
+    - `1 <= intervals.length <= 10000`
+    - `intervals[i].length == 2`
+    - `0 <= starti <= endi <= 10000`
+
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+    </head>
+    <body>
+      <script>
+       function mergeIntervals(intervals) {
+  if (intervals.length <= 1) {
+    return intervals;
+  }
+
+  intervals.sort((a, b) => a[0] - b[0]);
+
+  const result = [intervals[0]];
+
+  for (let i = 1; i < intervals.length; i++) {
+    const currInterval = intervals[i];
+    const lastInterval = result[result.length - 1];
+
+    if (currInterval[0] <= lastInterval[1]) {
+      // Overlapping intervals, update the end time of the last interval
+      lastInterval[1] = Math.max(currInterval[1], lastInterval[1]);
+    } else {
+      // Non-overlapping interval, add it to the result array
+      result.push(currInterval);
+    }
+  }
+
+  return result;
+}
+
+// Test cases
+const intervals1 = [[1, 3], [2, 6], [8, 10], [15, 18]];
+const intervals2 = [[1, 4], [4, 5]];
+
+console.log(mergeIntervals(intervals1)); // Output: [[1, 6], [8, 10], [15, 18]]
+console.log(mergeIntervals(intervals2)); // Output: [[1, 5]]
+
+  
+      </script>
+    </body>
+    </html>
+
+
+
+        💡 2. **Sort Colors**
+        
+        Given an array `nums` with `n` objects colored red, white, or blue, sort them **[in-place](https://en.wikipedia.org/wiki/In-place_algorithm)** so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
+        
+        We will use the integers `0`, `1`, and `2` to represent the color red, white, and blue, respectively.
+        
+        You must solve this problem without using the library's sort function.
+        
+        **Example 1:**
+        
+        ```
+        Input: nums = [2,0,2,1,1,0]
+        Output: [0,0,1,1,2,2]
+        
+        ```
+        
+        **Example 2:**
+        
+        ```
+        Input: nums = [2,0,1]
+        Output: [0,1,2]
+        
+        ```
+        
+        **Constraints:**
+        
+        - `n == nums.length`
+        - `1 <= n <= 300`
+        - `nums[i]` is either `0`, `1`, or `2`.
+   
+        
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Document</title>
+        </head>
+        <body>
+          <script>
+           function sortColors(nums) {
+  let low = 0; // Index for the red section
+  let mid = 0; // Index for the white section
+  let high = nums.length - 1; // Index for the blue section
+
+  while (mid <= high) {
+    switch (nums[mid]) {
+      case 0: // Red, swap with the low index
+        [nums[low], nums[mid]] = [nums[mid], nums[low]];
+        low++;
+        mid++;
+        break;
+      case 1: // White, leave in the middle
+        mid++;
+        break;
+      case 2: // Blue, swap with the high index
+        [nums[mid], nums[high]] = [nums[high], nums[mid]];
+        high--;
+        break;
+    }
+  }
+}
+
+// Test cases
+const nums1 = [2, 0, 2, 1, 1, 0];
+const nums2 = [2, 0, 1];
+
+sortColors(nums1);
+sortColors(nums2);
+
+console.log(nums1); // Output: [0, 0, 1, 1, 2, 2]
+console.log(nums2); // Output: [0, 1, 2]
+
+      
+          </script>
+        </body>
+        </html>
+
+
+
+            💡 3. **First Bad Version Solution**
+            
+            You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.
+            
+            Suppose you have `n` versions `[1, 2, ..., n]` and you want to find out the first bad one, which causes all the following ones to be bad.
+            
+            You are given an API `bool isBadVersion(version)` which returns whether `version` is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.
+            
+            **Example 1:**
+            
+            ```
+            Input: n = 5, bad = 4
+            Output: 4
+            Explanation:
+            call isBadVersion(3) -> false
+            call isBadVersion(5) -> true
+            call isBadVersion(4) -> true
+            Then 4 is the first bad version.
+            
+            ```
+            
+            **Example 2:**
+            
+            ```
+            Input: n = 1, bad = 1
+            Output: 1
+            
+            ```
+            
+            **Constraints:**
+            
+            - `1 <= bad <= n <= 2^31 - 1`
+ 
+
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Document</title>
+            </head>
+            <body>
+              <script>
+               function sortColors(nums) {
+      let low = 0; // Index for the red section
+      let mid = 0; // Index for the white section
+      let high = nums.length - 1; // Index for the blue section
+    
+      while (mid <= high) {
+        switch (nums[mid]) {
+          case 0: // Red, swap with the low index
+            [nums[low], nums[mid]] = [nums[mid], nums[low]];
+            low++;
+            mid++;
+            break;
+          case 1: // White, leave in the middle
+            mid++;
+            break;
+          case 2: // Blue, swap with the high index
+            [nums[mid], nums[high]] = [nums[high], nums[mid]];
+            high--;
+            break;
+        }
+      }
+    }
+    
+    // Test cases
+    const nums13 = [2, 0, 2, 1, 1, 0];
+    const nums23 = [2, 0, 1];
+    
+    sortColors(nums13);
+    sortColors(nums23);
+    
+    console.log(nums13); // Output: [0, 0, 1, 1, 2, 2]
+    console.log(nums23); // Output: [0, 1, 2]
+    
+          
+              </script>
+            </body>
+            </html>
+
+
+      
+                💡 4. **Maximum Gap**
+                
+                Given an integer array `nums`, return *the maximum difference between two successive elements in its sorted form*. If the array contains less than two elements, return `0`.
+                
+                You must write an algorithm that runs in linear time and uses linear extra space.
+                
+                **Example 1:**
+                
+                ```
+                Input: nums = [3,6,9,1]
+                Output: 3
+                Explanation: The sorted form of the array is [1,3,6,9], either (3,6) or (6,9) has the maximum difference 3.
+                
+                ```
+                
+                **Example 2:**
+                
+                ```
+                Input: nums = [10]
+                Output: 0
+                Explanation: The array contains less than 2 elements, therefore return 0.
+                
+                ```
+                
+                **Constraints:**
+                
+                - `1 <= nums.length <= 10^5`
+                - `0 <= nums[i] <= 10^9`
+             
+
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Document</title>
+                </head>
+                <body>
+                    <script>
+                        function maximumGap(nums) {
+  const n = nums.length;
+  if (n < 2) {
+    return 0;
+  }
+
+  // Find the minimum and maximum values in the array
+  let minValue = nums[0];
+  let maxValue = nums[0];
+  for (let i = 1; i < n; i++) {
+    minValue = Math.min(minValue, nums[i]);
+    maxValue = Math.max(maxValue, nums[i]);
+  }
+
+  // Calculate the bucket size and the number of buckets
+  const bucketSize = Math.max(1, Math.floor((maxValue - minValue) / (n - 1)));
+  const bucketCount = Math.floor((maxValue - minValue) / bucketSize) + 1;
+
+  // Create an array of buckets, each bucket contains the minimum and maximum value in that bucket
+  const buckets = Array.from({ length: bucketCount }, () => [Infinity, -Infinity]);
+  for (const num of nums) {
+    const index = Math.floor((num - minValue) / bucketSize);
+    buckets[index][0] = Math.min(buckets[index][0], num);
+    buckets[index][1] = Math.max(buckets[index][1], num);
+  }
+
+  // Calculate the maximum gap by comparing the maximum value in one bucket and the minimum value in the next non-empty bucket
+  let maxGap = 0;
+  let prevMax = buckets[0][1];
+  for (let i = 1; i < bucketCount; i++) {
+    if (buckets[i][0] !== Infinity) {
+      maxGap = Math.max(maxGap, buckets[i][0] - prevMax);
+      prevMax = buckets[i][1];
+    }
+  }
+
+  return maxGap;
+}
+
+// Test cases
+console.log(maximumGap([3, 6, 9, 1])); // Output: 3
+console.log(maximumGap([10])); // Output: 0
+
+                    </script>
+                </body>
+                </html>
+
+
+
+                    💡 5. **Contains Duplicate**
+                    
+                    Given an integer array `nums`, return `true` if any value appears **at least twice** in the array, and return `false` if every element is distinct.
+                    
+                    **Example 1:**
+                    
+                    ```
+                    Input: nums = [1,2,3,1]
+                    Output: true
+                    
+                    ```
+                    
+                    **Example 2:**
+                    
+                    ```
+                    Input: nums = [1,2,3,4]
+                    Output: false
+                    
+                    ```
+                    
+                    **Example 3:**
+                    
+                    ```
+                    Input: nums = [1,1,1,3,3,4,3,2,4,2]
+                    Output: true
+                    
+                    ```
+                    
+                    **Constraints:**
+                    
+                    - `1 <= nums.length <= 10^5`
+                    - `109 <= nums[i] <= 10^9`
+ 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+function containsDuplicate(nums) {
+    const set = new Set();
+    for (let num of nums) {
+        if (set.has(num)) {
+            return true;
+        }
+        set.add(num);
+    }
+    return false;
+}
+
+// Test cases
+console.log(containsDuplicate([1, 2, 3, 1])); // Output: true
+console.log(containsDuplicate([1, 2, 3, 4])); // Output: false
+console.log(containsDuplicate([1, 1, 1, 3, 3, 4, 3, 2, 4, 2])); // Output: true
+
+  </script>
+</body>
+</html>
+
+
+
+  💡 6. **Minimum Number of Arrows to Burst Balloons**
+  
+  There are some spherical balloons taped onto a flat wall that represents the XY-plane. The balloons are represented as a 2D integer array `points` where `points[i] = [xstart, xend]` denotes a balloon whose **horizontal diameter** stretches between `xstart` and `xend`. You do not know the exact y-coordinates of the balloons.
+  
+  Arrows can be shot up **directly vertically** (in the positive y-direction) from different points along the x-axis. A balloon with `xstart` and `xend` is **burst** by an arrow shot at `x` if `xstart <= x <= xend`. There is **no limit** to the number of arrows that can be shot. A shot arrow keeps traveling up infinitely, bursting any balloons in its path.
+  
+  Given the array `points`, return *the **minimum** number of arrows that must be shot to burst all balloons*.
+  
+  **Example 1:**
+  
+  ```
+  Input: points = [[10,16],[2,8],[1,6],[7,12]]
+  Output: 2
+  Explanation: The balloons can be burst by 2 arrows:
+  - Shoot an arrow at x = 6, bursting the balloons [2,8] and [1,6].
+  - Shoot an arrow at x = 11, bursting the balloons [10,16] and [7,12].
+  
+  ```
+  
+  **Example 2:**
+  
+  ```
+  Input: points = [[1,2],[3,4],[5,6],[7,8]]
+  Output: 4
+  Explanation: One arrow needs to be shot for each balloon for a total of 4 arrows.
+  
+  ```
+  
+  **Example 3:**
+  
+  ```
+  Input: points = [[1,2],[2,3],[3,4],[4,5]]
+  Output: 2
+  Explanation: The balloons can be burst by 2 arrows:
+  - Shoot an arrow at x = 2, bursting the balloons [1,2] and [2,3].
+  - Shoot an arrow at x = 4, bursting the balloons [3,4] and [4,5].
+  
+  ```
+  
+  **Constraints:**
+  
+  - `1 <= points.length <= 10^5`
+  - `points[i].length == 2`
+  - `231 <= xstart < xend <= 2^31 - 1`
+ 
+
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function findMinArrowShots(points) {
+    if (points.length === 0) return 0;
+
+    // Sort the balloons based on their end points
+    points.sort((a, b) => a[1] - b[1]);
+
+    let arrows = 1;
+    let end = points[0][1];
+
+    // Iterate through the sorted balloons and shoot arrows to burst them
+    for (let i = 1; i < points.length; i++) {
+        if (points[i][0] > end) {
+            // If the start of the current balloon is greater than the previous end,
+            // it means a new arrow is required to burst these balloons.
+            arrows++;
+            end = points[i][1];
+        }
+        // If the start of the current balloon is within the range of the previous end,
+        // we can continue with the same arrow as it can burst this balloon too.
+    }
+
+    return arrows;
+}
+
+// Test cases
+console.log(findMinArrowShots([[10,16],[2,8],[1,6],[7,12]])); // Output: 2
+console.log(findMinArrowShots([[1,2],[3,4],[5,6],[7,8]]));    // Output: 4
+console.log(findMinArrowShots([[1,2],[2,3],[3,4],[4,5]]));    // Output: 2
+
+    </script>
+  </body>
+  </html>
+
+
+
+    💡 7. **Longest Increasing Subsequence**
+    
+    Given an integer array `nums`, return *the length of the longest **strictly increasing***
+    
+    ***subsequence***
+    
+    .
+    
+    **Example 1:**
+    
+    ```
+    Input: nums = [10,9,2,5,3,7,101,18]
+    Output: 4
+    Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
+    
+    ```
+    
+    **Example 2:**
+    
+    ```
+    Input: nums = [0,1,0,3,2,3]
+    Output: 4
+    
+    ```
+    
+    **Example 3:**
+    
+    ```
+    Input: nums = [7,7,7,7,7,7,7]
+    Output: 1
+    
+    ```
+    
+    **Constraints:**
+    
+    - `1 <= nums.length <= 2500`
+    - `-10^4 <= nums[i] <= 10^4`
+   
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+    </head>
+    <body>
+      <script>
+        function lengthOfLIS(nums) {
+    const n = nums.length;
+    const dp = new Array(n).fill(1); // Initialize dp array with 1 (minimum length of subsequence is 1)
+
+    for (let i = 1; i < n; i++) {
+        for (let j = 0; j < i; j++) {
+            if (nums[i] > nums[j]) {
+                dp[i] = Math.max(dp[i], dp[j] + 1);
+            }
+        }
+    }
+
+    return Math.max(...dp);
+}
+
+// Test cases
+console.log(lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18])); // Output: 4
+console.log(lengthOfLIS([0, 1, 0, 3, 2, 3]));         // Output: 4
+console.log(lengthOfLIS([7, 7, 7, 7, 7, 7, 7]));      // Output: 1
+
+      </script>
+    </body>
+    </html>
+
+
+ 
+      💡 8. **132 Pattern**
+      
+      Given an array of `n` integers `nums`, a **132 pattern** is a subsequence of three integers `nums[i]`, `nums[j]` and `nums[k]` such that `i < j < k` and `nums[i] < nums[k] < nums[j]`.
+      
+      Return `true` *if there is a **132 pattern** in* `nums`*, otherwise, return* `false`*.*
+      
+      **Example 1:**
+      
+      ```
+      Input: nums = [1,2,3,4]
+      Output: false
+      Explanation: There is no 132 pattern in the sequence.
+      
+      ```
+      
+      **Example 2:**
+      
+      ```
+      Input: nums = [3,1,4,2]
+      Output: true
+      Explanation: There is a 132 pattern in the sequence: [1, 4, 2].
+      
+      ```
+      
+      **Example 3:**
+      
+      ```
+      Input: nums = [-1,3,2,0]
+      Output: true
+      Explanation: There are three 132 patterns in the sequence: [-1, 3, 2], [-1, 3, 0] and [-1, 2, 0].
+      
+      ```
+      
+      **Constraints:**
+      
+      - `n == nums.length`
+      - `1 <= n <= 2 * 10^5`
+      - `-10^9 <= nums[i] <= 10^9`
+      
+    
+
+
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+      </head>
+      <body>
+        <script>
+          function find132pattern(nums) {
+    const n = nums.length;
+    let maxK = Number.NEGATIVE_INFINITY;
+    const stack = [];
+
+    for (let i = n - 1; i >= 0; i--) {
+        if (nums[i] < maxK) {
+            return true; // Found 132 pattern
+        }
+
+        // Pop elements from the stack if they are less than the current element (nums[i]).
+        // Update maxK with the maximum of these popped elements.
+        while (stack.length > 0 && nums[i] > stack[stack.length - 1]) {
+            maxK = stack.pop();
+        }
+
+        // Push the current element (nums[i]) onto the stack as a potential candidate for "1".
+        stack.push(nums[i]);
+    }
+
+    return false;
+}
+
+// Test cases
+console.log(find132pattern([1, 2, 3, 4]));    // Output: false
+console.log(find132pattern([3, 1, 4, 2]));    // Output: true
+console.log(find132pattern([-1, 3, 2, 0]));  // Output: true
+
+        </script>
+      </body>
+      </html>
