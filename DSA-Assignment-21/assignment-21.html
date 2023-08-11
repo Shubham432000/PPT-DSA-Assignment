@@ -1,0 +1,424 @@
+<aside>
+    💡 Question-1
+    
+    You are given a binary tree. The binary tree is represented using the TreeNode class. Each TreeNode has an integer value and left and right children, represented using the TreeNode class itself. Convert this binary tree into a binary search tree.
+    
+    Input:
+    
+            10
+    
+           /   \
+    
+         2      7
+    
+       /   \
+    
+     8      4
+    
+    Output:
+    
+            8
+    
+          /   \
+    
+        4     10
+    
+      /   \
+    
+    2      7
+    
+    </aside>
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function binaryTreeToBST(root) {
+    const elements = [];
+
+    // In-order traversal to get sorted elements
+    const inorderTraversal = (node) => {
+        if (!node) {
+            return;
+        }
+
+        inorderTraversal(node.left);
+        elements.push(node.val);
+        inorderTraversal(node.right);
+    };
+
+    inorderTraversal(root);
+
+    // Construct the binary search tree
+    const constructBST = (start, end) => {
+        if (start > end) {
+            return null;
+        }
+
+        const mid = Math.floor((start + end) / 2);
+        const newNode = new TreeNode(elements[mid]);
+
+        newNode.left = constructBST(start, mid - 1);
+        newNode.right = constructBST(mid + 1, end);
+
+        return newNode;
+    };
+
+    return constructBST(0, elements.length - 1);
+}
+
+// Example usage
+const tree = new TreeNode(10);
+tree.left = new TreeNode(2);
+tree.right = new TreeNode(7);
+tree.left.left = new TreeNode(8);
+tree.left.right = new TreeNode(4);
+
+const bstRoot = binaryTreeToBST(tree);
+
+// Helper function to print the in-order traversal of a tree
+function printInorder(node) {
+    if (node === null) {
+        return;
+    }
+
+    printInorder(node.left);
+    console.log(node.val);
+    printInorder(node.right);
+}
+
+printInorder(bstRoot); // Output: 2, 4, 7, 8, 10
+
+        </script>
+    </body>
+    </html>
+
+
+    <aside>
+        💡 Question-2:
+        
+        Given a Binary Search Tree with all unique values and two keys. Find the distance between two nodes in BST. The given keys always exist in BST.
+        
+        Example:
+        
+        Consider the following BST:
+        
+        ![1.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f2455039-7e12-43fc-a7d3-b5be24931c1c/1.png)
+        
+        **Input-1:**
+        
+        n = 9
+        
+        values = [8, 3, 1, 6, 4, 7, 10, 14,13]
+        
+        node-1 = 6
+        
+        node-2 = 14
+        
+        **Output-1:**
+        
+        The distance between the two keys = 4
+        
+        **Input-2:**
+        
+        n = 9
+        
+        values = [8, 3, 1, 6, 4, 7, 10, 14,13]
+        
+        node-1 = 3
+        
+        node-2 = 4
+        
+        **Output-2:**
+        
+        The distance between the two keys = 2
+        
+        </aside>
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Document</title>
+        </head>
+        <body>
+            <script>
+                class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function findDistance(root, node1, node2) {
+    const findLCA = (node, val1, val2) => {
+        if (!node) {
+            return null;
+        }
+
+        if (val1 < node.val && val2 < node.val) {
+            return findLCA(node.left, val1, val2);
+        } else if (val1 > node.val && val2 > node.val) {
+            return findLCA(node.right, val1, val2);
+        } else {
+            return node;
+        }
+    };
+
+    const findLevel = (node, target, level) => {
+        if (!node) {
+            return -1;
+        }
+
+        if (node.val === target) {
+            return level;
+        }
+
+        const leftLevel = findLevel(node.left, target, level + 1);
+        if (leftLevel !== -1) {
+            return leftLevel;
+        }
+
+        return findLevel(node.right, target, level + 1);
+    };
+
+    const lca = findLCA(root, node1, node2);
+    const distance1 = findLevel(lca, node1, 0);
+    const distance2 = findLevel(lca, node2, 0);
+
+    return distance1 + distance2;
+}
+
+// Example usage
+const values = [8, 3, 1, 6, 4, 7, 10, 14, 13];
+const root = new TreeNode(8);
+values.slice(1).forEach(val => insertNode(root, val));
+
+console.log(findDistance(root, 6, 14)); // Output: 4
+console.log(findDistance(root, 3, 4));  // Output: 2
+
+            </script>
+        </body>
+        </html>
+
+
+        <aside>
+            💡 Question-3:
+            
+            Write a program to convert a binary tree to a doubly linked list.
+            
+            Input:
+            
+                    10
+            
+                   /   \
+            
+                 5     20
+            
+                       /   \
+            
+                    30     35
+            
+            Output:
+            
+            5 10 30 20 35
+            
+            </aside>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+class DoublyListNode {
+    constructor(val, prev = null, next = null) {
+        this.val = val;
+        this.prev = prev;
+        this.next = next;
+    }
+}
+
+function binaryTreeToDoublyLinkedList(root) {
+    if (!root) {
+        return null;
+    }
+
+    let head = null;
+    let prev = null;
+
+    const inorderTraversal = (node) => {
+        if (!node) {
+            return;
+        }
+
+        inorderTraversal(node.left);
+
+        const newNode = new DoublyListNode(node.val);
+        if (!head) {
+            head = newNode;
+        } else {
+            prev.next = newNode;
+            newNode.prev = prev;
+        }
+        prev = newNode;
+
+        inorderTraversal(node.right);
+    };
+
+    inorderTraversal(root);
+
+    return head;
+}
+
+// Example usage
+const tree = new TreeNode(10);
+tree.left = new TreeNode(5);
+tree.right = new TreeNode(20);
+tree.right.left = new TreeNode(30);
+tree.right.right = new TreeNode(35);
+
+const dllHead = binaryTreeToDoublyLinkedList(tree);
+
+// Print the doubly linked list
+let current = dllHead;
+while (current) {
+    console.log(current.val);
+    current = current.next;
+}
+
+    </script>
+</body>
+</html>
+
+
+<aside>
+    💡 Question-4:
+    
+    Write a program to connect nodes at the same level.
+    
+    Input:
+    
+            1
+    
+          /   \
+    
+        2      3
+    
+      /   \   /   \
+    
+    4     5 6    7
+    
+    Output:
+    
+    1 → -1
+    
+    2 → 3
+    
+    3 → -1
+    
+    4 → 5
+    
+    5 → 6
+    
+    6 → 7
+    
+    7 → -1
+    
+    </aside>
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            class TreeNode {
+    constructor(val, left = null, right = null, nextRight = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+        this.nextRight = nextRight;
+    }
+}
+
+function connectNodesAtSameLevel(root) {
+    if (!root) {
+        return;
+    }
+
+    const queue = [root];
+
+    while (queue.length > 0) {
+        const levelSize = queue.length;
+
+        for (let i = 0; i < levelSize; i++) {
+            const node = queue.shift();
+
+            if (i < levelSize - 1) {
+                node.nextRight = queue[0];
+            }
+
+            if (node.left) {
+                queue.push(node.left);
+            }
+            if (node.right) {
+                queue.push(node.right);
+            }
+        }
+    }
+}
+
+// Helper function to print the "nextRight" pointers
+function printNextRight(node) {
+    while (node) {
+        console.log(node.val + ' → ' + (node.nextRight ? node.nextRight.val : -1));
+        node = node.nextRight;
+    }
+}
+
+// Example usage
+const tree = new TreeNode(1);
+tree.left = new TreeNode(2);
+tree.right = new TreeNode(3);
+tree.left.left = new TreeNode(4);
+tree.left.right = new TreeNode(5);
+tree.right.left = new TreeNode(6);
+tree.right.right = new TreeNode(7);
+
+connectNodesAtSameLevel(tree);
+
+printNextRight(tree.left.left); // Output: 4 → 5 → 6 → 7 → -1
+
+        </script>
+    </body>
+    </html>

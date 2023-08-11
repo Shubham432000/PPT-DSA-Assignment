@@ -1,0 +1,348 @@
+<aside>
+    💡 Question-1:
+    
+    Given a Binary Tree (Bt), convert it to a Doubly Linked List(DLL). The left and right pointers in nodes are to be used as previous and next pointers respectively in converted DLL. The order of nodes in DLL must be the same as in Inorder for the given Binary Tree. The first node of Inorder traversal (leftmost node in BT) must be the head node of the DLL.
+    
+    Example:
+    https://pwskills.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Ff9dda6ae-60b9-427b-990f-dc5b3117a5e3%2FUntitled.png?table=block&id=f5542efd-4d64-4904-9259-23aeb80f012b&spaceId=6fae2e0f-dedc-48e9-bc59-af2654c78209&width=860&userId=&cache=v2
+    </aside>
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+class DoublyListNode {
+    constructor(val, prev = null, next = null) {
+        this.val = val;
+        this.prev = prev;
+        this.next = next;
+    }
+}
+
+function convertBTToDLL(root) {
+    if (!root) {
+        return null;
+    }
+
+    let head = null;
+    let prev = null;
+
+    const inorderTraversal = (node) => {
+        if (!node) {
+            return;
+        }
+
+        inorderTraversal(node.left);
+
+        const newNode = new DoublyListNode(node.val);
+        if (!head) {
+            head = newNode;
+        } else {
+            prev.next = newNode;
+            newNode.prev = prev;
+        }
+        prev = newNode;
+
+        inorderTraversal(node.right);
+    };
+
+    inorderTraversal(root);
+
+    return head;
+}
+
+// Example usage
+const tree = new TreeNode(10);
+tree.left = new TreeNode(5);
+tree.right = new TreeNode(20);
+tree.right.left = new TreeNode(30);
+tree.right.right = new TreeNode(35);
+
+const dllHead = convertBTToDLL(tree);
+
+// Print the doubly linked list
+let current = dllHead;
+while (current) {
+    console.log(current.val);
+    current = current.next;
+}
+
+        </script>
+    </body>
+    </html>
+
+
+    <aside>
+        💡 Question-2
+        
+        A Given a binary tree, the task is to flip the binary tree towards the right direction that is clockwise. See the below examples to see the transformation.
+        
+        In the flip operation, the leftmost node becomes the root of the flipped tree and its parent becomes its right child and the right sibling becomes its left child and the same should be done for all left most nodes recursively.
+        
+        Example1:
+        
+        ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a5f5bbbe-8607-4f17-9ab4-b31327ffa2d0/Untitled.png)
+        
+        Example2:
+        https://pwskills.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F063636b4-9f35-4524-b6d9-c97e30cac510%2FUntitled.png?table=block&id=257a6e42-4876-4a44-ac0e-07f80a570f83&spaceId=6fae2e0f-dedc-48e9-bc59-af2654c78209&width=860&userId=&cache=v2
+        </aside>
+
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Document</title>
+        </head>
+        <body>
+            <script>
+                class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function flipBinaryTreeClockwise(root) {
+    if (!root) {
+        return null;
+    }
+
+    // Base case: if the node has no left or right children
+    if (!root.left && !root.right) {
+        return root;
+    }
+
+    const newRoot = flipBinaryTreeClockwise(root.left);
+
+    // Flip the current node
+    root.left = null;
+    root.right = null;
+
+    if (newRoot) {
+        newRoot.right = root;
+        newRoot.left = flipBinaryTreeClockwise(root.right);
+    }
+
+    return newRoot;
+}
+
+// Example usage
+const tree = new TreeNode(1);
+tree.left = new TreeNode(2);
+tree.right = new TreeNode(3);
+tree.left.left = new TreeNode(4);
+tree.left.right = new TreeNode(5);
+tree.right.left = new TreeNode(6);
+tree.right.right = new TreeNode(7);
+
+const flippedTree = flipBinaryTreeClockwise(tree);
+
+// Helper function to print the flipped tree in an inorder traversal
+function printInorder(node) {
+    if (!node) {
+        return;
+    }
+
+    printInorder(node.left);
+    console.log(node.val);
+    printInorder(node.right);
+}
+
+printInorder(flippedTree);
+
+            </script>
+        </body>
+        </html>
+
+
+        <aside>
+            💡 Question-3:
+            
+            Given a binary tree, print all its root-to-leaf paths without using recursion. For example, consider the following Binary Tree.
+            
+            Input:
+            
+                    6
+                 /    \
+                3      5
+              /   \     \
+             2     5     4
+                 /   \
+                7     4
+            
+            Output:
+            
+            There are 4 leaves, hence 4 root to leaf paths -
+              6->3->2
+              6->3->5->7
+              6->3->5->4
+              6->5>4
+            
+            </aside>
+
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Document</title>
+            </head>
+            <body>
+                <script>
+                    class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function printRootToLeafPaths(root) {
+    if (!root) {
+        return;
+    }
+
+    const stack = [];
+    stack.push({ node: root, path: String(root.val) });
+
+    while (stack.length > 0) {
+        const { node, path } = stack.pop();
+
+        if (!node.left && !node.right) {
+            console.log(path);
+        }
+
+        if (node.right) {
+            stack.push({ node: node.right, path: path + "->" + node.right.val });
+        }
+
+        if (node.left) {
+            stack.push({ node: node.left, path: path + "->" + node.left.val });
+        }
+    }
+}
+
+// Example usage
+const tree = new TreeNode(6);
+tree.left = new TreeNode(3);
+tree.right = new TreeNode(5);
+tree.left.left = new TreeNode(2);
+tree.left.right = new TreeNode(5);
+tree.right.right = new TreeNode(4);
+tree.left.right.left = new TreeNode(7);
+tree.left.right.right = new TreeNode(4);
+
+printRootToLeafPaths(tree);
+
+                </script>
+            </body>
+            </html>
+
+
+            <aside>
+                💡 Question-4:
+                
+                Given Preorder, Inorder and Postorder traversals of some tree. Write a program to check if they all are of the same tree.
+                
+                **Examples:**
+                
+                Input : 
+                
+                        Inorder -> 4 2 5 1 3
+                        Preorder -> 1 2 4 5 3
+                        Postorder -> 4 5 2 3 1
+                Output : 
+                
+                Yes
+                Explanation : 
+                
+                All of the above three traversals are of
+                the same tree 
+                
+                                           1
+                                         /   \
+                                        2     3
+                                      /   \
+                                     4     5
+                
+                Input : 
+                
+                        Inorder -> 4 2 5 1 3
+                        Preorder -> 1 5 4 2 3
+                        Postorder -> 4 1 2 3 5
+                Output : 
+                
+                No
+                
+                </aside>
+
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Document</title>
+                </head>
+                <body>
+                    <script>
+                        function areTraversalsSameTree(inorder, preorder, postorder) {
+    if (inorder.length === 0) {
+        return true;
+    }
+
+    if (inorder.length === 1) {
+        return (
+            inorder[0] === preorder[0] &&
+            inorder[0] === postorder[postorder.length - 1]
+        );
+    }
+
+    const root = preorder[0];
+    const rootIndexInorder = inorder.indexOf(root);
+    const leftInorder = inorder.slice(0, rootIndexInorder);
+    const rightInorder = inorder.slice(rootIndexInorder + 1);
+
+    const leftPreorder = preorder.slice(1, 1 + leftInorder.length);
+    const rightPreorder = preorder.slice(1 + leftInorder.length);
+
+    const leftPostorder = postorder.slice(0, leftInorder.length);
+    const rightPostorder = postorder.slice(leftInorder.length, -1);
+
+    return (
+        areTraversalsSameTree(leftInorder, leftPreorder, leftPostorder) &&
+        areTraversalsSameTree(rightInorder, rightPreorder, rightPostorder)
+    );
+}
+
+// Example usage
+const inorder = [4, 2, 5, 1, 3];
+const preorder = [1, 2, 4, 5, 3];
+const postorder = [4, 5, 2, 3, 1];
+
+console.log(areTraversalsSameTree(inorder, preorder, postorder)); // Output: true
+
+const inorder2 = [4, 2, 5, 1, 3];
+const preorder2 = [1, 5, 4, 2, 3];
+const postorder2 = [4, 1, 2, 3, 5];
+
+console.log(areTraversalsSameTree(inorder2, preorder2, postorder2)); // Output: false
+
+                    </script>
+                </body>
+                </html>

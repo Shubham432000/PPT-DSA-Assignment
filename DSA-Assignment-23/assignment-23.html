@@ -1,0 +1,427 @@
+<aside>
+    💡 Question-1:
+    
+    Given preorder of a binary tree, calculate its **[depth(or height)](https://www.geeksforgeeks.org/write-a-c-program-to-find-the-maximum-depth-or-height-of-a-tree/)** [starting from depth 0]. The preorder is given as a string with two possible characters.
+    
+    1. ‘l’ denotes the leaf
+    2. ‘n’ denotes internal node
+    
+    The given tree can be seen as a full binary tree where every node has 0 or two children. The two children of a node can ‘n’ or ‘l’ or mix of both.
+    
+    **Examples :**
+    
+    Input  : nlnll
+    Output : 2
+    Explanation :
+    
+    !https://media.geeksforgeeks.org/wp-content/uploads/btree1.png
+    
+    Input  : nlnnlll
+    Output : 3
+    https://pwskills.notion.site/image/https%3A%2F%2Fmedia.geeksforgeeks.org%2Fwp-content%2Fuploads%2Fdia2.png?table=block&id=604e28b1-a250-4e4f-9416-91e5c4545e60&spaceId=6fae2e0f-dedc-48e9-bc59-af2654c78209&width=580&userId=&cache=v2
+    </aside>
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            function calculateDepth(preorder) {
+    let stack = [];
+    let maxDepth = 0;
+    let currentDepth = 0;
+
+    for (let char of preorder) {
+        if (char === 'n') {
+            currentDepth++;
+            stack.push(currentDepth);
+        } else if (char === 'l') {
+            maxDepth = Math.max(maxDepth, currentDepth);
+            currentDepth = stack.pop();
+        }
+    }
+
+    return maxDepth;
+}
+
+// Example usage
+const preorder1 = 'nlnll';
+console.log(calculateDepth(preorder1)); // Output: 2
+
+const preorder2 = 'nlnnlll';
+console.log(calculateDepth(preorder2)); // Output: 3
+
+        </script>
+    </body>
+    </html>
+
+
+    <aside>
+        💡 Question-2:
+        
+        Given a Binary tree, the task is to print the **left view** of the Binary Tree. The left view of a Binary Tree is a set of leftmost nodes for every level.
+        
+        **Examples:**
+        
+        ***Input:***
+        
+                    4
+        
+                  /   \
+        
+                5     2
+        
+                     /   \
+        
+                    3     1
+        
+                   /  \
+        
+                  6    7
+        
+        ***Output:** 4 5 3 6*
+        
+        **Explanation:**
+        
+        !https://media.geeksforgeeks.org/wp-content/cdn-uploads/left-view.png
+        
+        ***Input:***
+        
+                            1
+        
+                          /   \
+        
+                        2       3
+        
+                         \
+        
+                           4
+        
+                             \
+        
+                                5
+        
+                                   \
+        
+                                     6
+        
+        **Output:** 1 2 4 5 6
+        
+        </aside>
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Document</title>
+        </head>
+        <body>
+            <script>
+                class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function printLeftView(root) {
+    if (!root) {
+        return;
+    }
+
+    const queue = [root];
+
+    while (queue.length > 0) {
+        const levelSize = queue.length;
+
+        for (let i = 0; i < levelSize; i++) {
+            const node = queue.shift();
+
+            if (i === 0) {
+                console.log(node.val);
+            }
+
+            if (node.left) {
+                queue.push(node.left);
+            }
+            if (node.right) {
+                queue.push(node.right);
+            }
+        }
+    }
+}
+
+// Example usage
+const tree1 = new TreeNode(4);
+tree1.left = new TreeNode(5);
+tree1.right = new TreeNode(2);
+tree1.right.left = new TreeNode(3);
+tree1.right.right = new TreeNode(1);
+tree1.right.left.left = new TreeNode(6);
+tree1.right.left.right = new TreeNode(7);
+
+printLeftView(tree1); // Output: 4 5 3 6
+
+const tree2 = new TreeNode(1);
+tree2.left = new TreeNode(2);
+tree2.right = new TreeNode(3);
+tree2.left.right = new TreeNode(4);
+tree2.left.right.right = new TreeNode(5);
+tree2.left.right.right.right = new TreeNode(6);
+
+printLeftView(tree2); // Output: 1 2 4 5 6
+
+            </script>
+        </body>
+        </html>
+
+
+        <aside>
+            💡 Question-3:
+            
+            Given a Binary Tree, print the Right view of it.
+            
+            The right view of a Binary Tree is a set of nodes visible when the tree is visited from the Right side.
+            
+            **Examples:**
+            
+            **Input:**
+            
+                     1
+            
+                  /     \
+            
+               2         3
+            
+            /   \       /  \
+            
+            4     5   6    7
+            
+                         \
+            
+                           8
+            
+            **Output**: 
+            
+            Right view of the tree is 1 3 7 8
+            
+            **Input:**
+            
+                     1
+            
+                   /
+            
+                8
+            
+              /
+            
+            7
+            
+            **Output**: 
+            
+            Right view of the tree is 1 8 7
+            
+            </aside>
+
+
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Document</title>
+            </head>
+            <body>
+                <script>
+                    class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function printRightView(root) {
+    if (!root) {
+        return;
+    }
+
+    const queue = [root];
+
+    while (queue.length > 0) {
+        const levelSize = queue.length;
+
+        for (let i = 0; i < levelSize; i++) {
+            const node = queue.shift();
+
+            if (i === levelSize - 1) {
+                console.log(node.val);
+            }
+
+            if (node.left) {
+                queue.push(node.left);
+            }
+            if (node.right) {
+                queue.push(node.right);
+            }
+        }
+    }
+}
+
+// Example usage
+const tree1 = new TreeNode(1);
+tree1.left = new TreeNode(2);
+tree1.right = new TreeNode(3);
+tree1.left.left = new TreeNode(4);
+tree1.left.right = new TreeNode(5);
+tree1.right.left = new TreeNode(6);
+tree1.right.right = new TreeNode(7);
+tree1.right.right.right = new TreeNode(8);
+
+printRightView(tree1); // Output: 1 3 7 8
+
+const tree2 = new TreeNode(1);
+tree2.left = new TreeNode(8);
+tree2.left.left = new TreeNode(7);
+
+printRightView(tree2); // Output: 1 8 7
+
+                </script>
+            </body>
+            </html>
+
+
+            <aside>
+                💡 Question-4:
+                
+                Given a Binary Tree, The task is to print the **bottom view** from left to right. A node **x** is there in output if x is the bottommost node at its horizontal distance. The horizontal distance of the left child of a node x is equal to a horizontal distance of x minus 1, and that of a right child is the horizontal distance of x plus 1.
+                
+                **Examples:**
+                
+                **Input:**
+                
+                             20
+                
+                           /     \
+                
+                        8         22
+                
+                    /      \         \
+                
+                5         3        25
+                
+                        /    \
+                
+                   10       14
+                
+                **Output:** 5, 10, 3, 14, 25.
+                
+                **Input:**
+                
+                             20
+                
+                           /     \
+                
+                        8         22
+                
+                    /      \      /   \
+                
+                 5         3    4     25
+                
+                         /    \
+                
+                     10       14
+                
+                **Output:**
+                
+                5 10 4 14 25.
+                
+                **Explanation:**
+                
+                If there are multiple bottom-most nodes for a horizontal distance from the root, then print the later one in the level traversal.
+                
+                **3 and 4** are both the bottom-most nodes at a horizontal distance of 0, we need to print 4.
+                
+                </aside>
+
+
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Document</title>
+                </head>
+                <body>
+                    <script>
+                        class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function printBottomView(root) {
+    if (!root) {
+        return;
+    }
+
+    const queue = [];
+    const distances = new Map(); // Store node values by horizontal distance
+
+    queue.push({ node: root, distance: 0 });
+
+    while (queue.length > 0) {
+        const { node, distance } = queue.shift();
+
+        // Update the value for the current horizontal distance
+        distances.set(distance, node.val);
+
+        if (node.left) {
+            queue.push({ node: node.left, distance: distance - 1 });
+        }
+        if (node.right) {
+            queue.push({ node: node.right, distance: distance + 1 });
+        }
+    }
+
+    // Print the bottom view values in the order of horizontal distances
+    distances.forEach(value => {
+        console.log(value);
+    });
+}
+
+// Example usage
+const tree1 = new TreeNode(20);
+tree1.left = new TreeNode(8);
+tree1.right = new TreeNode(22);
+tree1.left.left = new TreeNode(5);
+tree1.left.right = new TreeNode(3);
+tree1.right.right = new TreeNode(25);
+tree1.left.right.left = new TreeNode(10);
+tree1.left.right.right = new TreeNode(14);
+
+printBottomView(tree1); // Output: 5 10 3 14 25
+
+const tree2 = new TreeNode(20);
+tree2.left = new TreeNode(8);
+tree2.right = new TreeNode(22);
+tree2.left.left = new TreeNode(5);
+tree2.left.right = new TreeNode(3);
+tree2.right.left = new TreeNode(4);
+tree2.right.right = new TreeNode(25);
+tree2.left.right.left = new TreeNode(10);
+tree2.left.right.right = new TreeNode(14);
+
+printBottomView(tree2); // Output: 5 10 4 14 25
+
+                    </script>
+                </body>
+                </html>
